@@ -1,0 +1,147 @@
+syntax="proto3";
+package com.yue.dbservice;
+
+
+// get
+message getRequest{
+    string dataSource =1;
+    string table=2;
+    string paras=3;
+}
+
+message getResponse{
+    string result=1;
+}
+
+// getOne
+message getOneRequest{
+    string dataSource=1;
+    string table=2;
+    string where=3;
+    string paras=4;
+}
+
+message getOneResponse{
+    string result=1;
+}
+
+// list
+message listRequest{
+    string dataSource=1;
+    string table=2;
+    string where=3;
+}
+
+message listResponse{
+    string result=1;
+}
+
+// save
+message saveRequest{
+    string dataSource=1;
+    string table=2;
+    string where=3;
+    string paras=4;
+}
+
+message saveResponse{
+    string result=1;
+}
+
+// update
+message updateRequest{
+    string dataSource=1;
+    string table=2;
+    string where=3;
+    string paras=4;
+}
+
+message updateResponse{
+    bool result=1;
+}
+
+// del
+message delRequest{
+    string dataSource=1;
+    string table=2;
+    string id=3;
+}
+
+message delResponse{
+    bool result=1;
+}
+
+// multiGet
+message multiGetRequest{
+    string dataSource=1;
+    string table=2;
+    string id=3;
+    string field=4;
+}
+
+message multiGetResponse{
+    string result=1;
+}
+
+// toOne
+message toOneRequest{
+    string dataSource=1;
+    string table=2;
+    string where=3;
+    string paras=4;
+    string result=5;
+}
+
+message toOneResponse{
+    string result=1;
+}
+
+//toMany
+message toManyRequest{
+    string dataSource=1;
+    string table=2;
+    string where=3;
+    string paras=4;
+    string result=5;
+}
+
+message toManyResponse{
+    string result=1;
+}
+
+// count
+message countRequest{
+    string dataSource=1;
+    string table=2;
+    string where=3;
+}
+
+message countResponse{
+    string result=1;
+}
+
+// sum
+message sumRequest{
+    string dataSource=1;
+    string table=2;
+    string where=3;
+    string field=4;
+}
+
+message sumResponse{
+    string result=1;
+}
+
+service DbService{
+    rpc get(getRequest) returns (getResponse){}
+    rpc getOne(getOneRequest) returns (getOneResponse){}
+    rpc list(listRequest) returns (listResponse){}
+    rpc save(saveRequest) returns (saveResponse){}
+    rpc update(updateRequest) returns (updateResponse){}
+    rpc del(delRequest) returns (delResponse){}
+    rpc multiGet(multiGetRequest) returns (multiGetResponse){}
+    rpc toOne(toOneRequest) returns (toOneResponse){}
+    rpc toMany(toManyRequest) returns (toManyResponse){}
+    rpc count(countRequest) returns (countResponse){}
+    rpc sum(sumRequest) returns (sumResponse){}
+}
