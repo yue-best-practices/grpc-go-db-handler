@@ -3,7 +3,7 @@ package grpc_go_db_handler
 import (
 	"google.golang.org/grpc"
 	"log"
-	pb "./pb"
+	pb "github.com/yue-best-practices/grpc-go-db-handler/pb"
 	"golang.org/x/net/context"
 	"time"
 	"encoding/json"
