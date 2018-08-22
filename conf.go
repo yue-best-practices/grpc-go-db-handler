@@ -4,12 +4,14 @@ import (
 	"os"
 	"fmt"
 	"strconv"
+	"time"
 )
 
 var (
 	address=""
 	source=""
 	poolSize=5
+	expireTime=time.Duration(1000)
 )
 
 
@@ -39,6 +41,16 @@ func checkEnv() error{
 		poolSize=ps
 
 	}
+
+	ept:=os.Getenv("EXPIRE_TIME")
+	if ept!=""{
+		t,err:=strconv.Atoi(ept)
+		if err!=nil{
+			return fmt.Errorf("env EXPIRE_TIME is invalid")
+		}
+		expireTime=time.Duration(t)
+	}
+
 
 	return nil
 }

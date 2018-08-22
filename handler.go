@@ -45,7 +45,7 @@ func (db *dbHandler) Get(table string,paras interface{},arg ...string) (interfac
 
 	c := pb.NewDbServiceClient(conn)
 
-	ctx,cancel:=context.WithTimeout(context.Background(),time.Second)
+	ctx,cancel:=context.WithTimeout(context.Background(),time.Microsecond*expireTime)
 	defer cancel()
 
 	var dataSource string
@@ -85,7 +85,7 @@ func (db *dbHandler) GetOne(table string,where string,paras interface{},arg ...s
 
 	c := pb.NewDbServiceClient(conn)
 
-	ctx,cancel:=context.WithTimeout(context.Background(),time.Second)
+	ctx,cancel:=context.WithTimeout(context.Background(),time.Microsecond*expireTime)
 	defer cancel()
 
 	var dataSource string
@@ -129,7 +129,7 @@ func (db *dbHandler) List(table string,where interface{},arg ...string) (interfa
 	c := pb.NewDbServiceClient(conn)
 
 
-	ctx,cancel:=context.WithTimeout(context.Background(),time.Second)
+	ctx,cancel:=context.WithTimeout(context.Background(),time.Microsecond*expireTime)
 	defer cancel()
 
 	var dataSource string
@@ -170,7 +170,7 @@ func (db * dbHandler) Save(table string,paras interface{},arg ...string) (interf
 
 	c := pb.NewDbServiceClient(conn)
 
-	ctx,cancel:=context.WithTimeout(context.Background(),time.Second)
+	ctx,cancel:=context.WithTimeout(context.Background(),time.Microsecond*expireTime)
 	defer cancel()
 
 	where:="id"
@@ -217,7 +217,7 @@ func (db *dbHandler) Update(table string,where interface{},paras interface{},arg
 
 	c := pb.NewDbServiceClient(conn)
 
-	ctx,cancel:=context.WithTimeout(context.Background(),time.Second)
+	ctx,cancel:=context.WithTimeout(context.Background(),time.Microsecond*expireTime)
 	defer cancel()
 
 	dataSource:=db.dataSource
@@ -249,7 +249,7 @@ func (db *dbHandler) Del(table string,id interface{},arg ...string) (interface{}
 
 	c := pb.NewDbServiceClient(conn)
 
-	ctx,cancel:=context.WithTimeout(context.Background(),time.Second)
+	ctx,cancel:=context.WithTimeout(context.Background(),time.Microsecond*expireTime)
 	defer cancel()
 
 	dataSource:=db.dataSource
@@ -280,7 +280,7 @@ func (db *dbHandler) MultiGet(table string,id interface{},arg ...string) (interf
 
 	c := pb.NewDbServiceClient(conn)
 
-	ctx,cancel:=context.WithTimeout(context.Background(),time.Second)
+	ctx,cancel:=context.WithTimeout(context.Background(),time.Microsecond*expireTime)
 	defer cancel()
 
 	field:="id"
@@ -334,7 +334,7 @@ func (db *dbHandler) ToOne(table string,where string,paras string,result interfa
 
 	c := pb.NewDbServiceClient(conn)
 
-	ctx,cancel:=context.WithTimeout(context.Background(),time.Second)
+	ctx,cancel:=context.WithTimeout(context.Background(),time.Microsecond*expireTime)
 	defer cancel()
 
 	dataSource:=db.dataSource
@@ -377,7 +377,7 @@ func (db *dbHandler) ToMany(table string,where string,paras string,result interf
 
 	c := pb.NewDbServiceClient(conn)
 
-	ctx,cancel:=context.WithTimeout(context.Background(),time.Second)
+	ctx,cancel:=context.WithTimeout(context.Background(),time.Microsecond*expireTime)
 	defer cancel()
 
 	dataSource:=db.dataSource
@@ -419,7 +419,7 @@ func (db *dbHandler) Count(table string,where interface{},arg ...string) (interf
 
 	c := pb.NewDbServiceClient(conn)
 
-	ctx,cancel:=context.WithTimeout(context.Background(),time.Second)
+	ctx,cancel:=context.WithTimeout(context.Background(),time.Microsecond*expireTime)
 	defer cancel()
 
 	dataSource:=db.dataSource
@@ -459,7 +459,7 @@ func (db *dbHandler) Sum(table string,field string, where interface{},arg ...str
 
 	c := pb.NewDbServiceClient(conn)
 
-	ctx,cancel:=context.WithTimeout(context.Background(),time.Second)
+	ctx,cancel:=context.WithTimeout(context.Background(),time.Microsecond*expireTime)
 	defer cancel()
 
 	dataSource:=db.dataSource
