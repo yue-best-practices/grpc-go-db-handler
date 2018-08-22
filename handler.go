@@ -30,7 +30,7 @@ func NewDbHandler() (*dbHandler,error){
 			return
 		}
 		ins=&dbHandler{address:address,dataSource:source}
-		initPool()
+		e=initPool()
 	})
 	return ins,e
 }
