@@ -17,7 +17,7 @@ type dbHandler struct {
 
 
 var (
-	pool=make(chan *grpc.ClientConn,poolSize) //grpc 连接池
+	pool chan *grpc.ClientConn //grpc 连接池
 	ins *dbHandler
 	once sync.Once
 )
@@ -39,19 +39,11 @@ func NewDbHandler() (*dbHandler,error){
 
 func (db *dbHandler) Get(table string,paras interface{},arg ...string) (interface{},error){
 
-	//conn, err := grpc.Dial(db.address, grpc.WithInsecure())
-	//
-	//if err!=nil{
-	//	log.Printf("Get Conn Error:%v",err)
-	//	return nil,err
-	//}
-	//defer conn.Close()
 	conn:=getClient()
 
 	defer releaseClient(conn)
 
 	c := pb.NewDbServiceClient(conn)
-
 
 	ctx,cancel:=context.WithTimeout(context.Background(),time.Second)
 	defer cancel()
@@ -86,67 +78,12 @@ func (db *dbHandler) Get(table string,paras interface{},arg ...string) (interfac
 	return result,nil
 }
 
-
-
-
-//func (db *dbHandler) Get(table string,paras interface{},arg ...string) (interface{},error){
-//
-//	conn, err := grpc.Dial(db.address, grpc.WithInsecure())
-//
-//	if err!=nil{
-//		log.Printf("Get Conn Error:%v",err)
-//		return nil,err
-//	}
-//	defer conn.Close()
-//
-//	c := pb.NewDbServiceClient(conn)
-//
-//
-//	ctx,cancel:=context.WithTimeout(context.Background(),time.Second)
-//	defer cancel()
-//
-//	var dataSource string
-//
-//	if arg!=nil{
-//		dataSource=arg[0]
-//	}else{
-//		dataSource=db.dataSource
-//	}
-//
-//	t,_:=json.Marshal(table)
-//	p,_:=json.Marshal(paras)
-//	d,_:=json.Marshal(dataSource)
-//
-//	r,err:=c.Get(ctx,&pb.GetRequest{Table:string(t),Paras:string(p),DataSource:string(d)})
-//
-//	if err != nil {
-//		log.Printf("Get Result Error:%v",err)
-//		return nil,err
-//	}
-//
-//	var result interface{}
-//	err = json.Unmarshal([]byte(r.Result),&result)
-//
-//	if err!=nil{
-//		log.Printf("Get Json Error:%v",err)
-//		return nil,err
-//	}
-//
-//	return result,nil
-//}
-
-
 func (db *dbHandler) GetOne(table string,where string,paras interface{},arg ...string) (interface{},error){
-	conn, err := grpc.Dial(db.address, grpc.WithInsecure())
+	conn:=getClient()
 
-	if err!=nil{
-		log.Printf("GetOne Conn Error:%v",err)
-		return nil,err
-	}
-	defer conn.Close()
+	defer releaseClient(conn)
 
 	c := pb.NewDbServiceClient(conn)
-
 
 	ctx,cancel:=context.WithTimeout(context.Background(),time.Second)
 	defer cancel()
@@ -185,13 +122,9 @@ func (db *dbHandler) GetOne(table string,where string,paras interface{},arg ...s
 
 
 func (db *dbHandler) List(table string,where interface{},arg ...string) (interface{},error){
-	conn, err := grpc.Dial(db.address, grpc.WithInsecure())
+	conn:=getClient()
 
-	if err!=nil{
-		log.Printf("List Conn Error:%v",err)
-		return nil,err
-	}
-	defer conn.Close()
+	defer releaseClient(conn)
 
 	c := pb.NewDbServiceClient(conn)
 
@@ -231,13 +164,9 @@ func (db *dbHandler) List(table string,where interface{},arg ...string) (interfa
 
 
 func (db * dbHandler) Save(table string,paras interface{},arg ...string) (interface{},error) {
-	conn, err := grpc.Dial(db.address, grpc.WithInsecure())
+	conn:=getClient()
 
-	if err!=nil{
-		log.Printf("Save Conn Error:%v",err)
-		return nil,err
-	}
-	defer conn.Close()
+	defer releaseClient(conn)
 
 	c := pb.NewDbServiceClient(conn)
 
@@ -282,13 +211,9 @@ func (db * dbHandler) Save(table string,paras interface{},arg ...string) (interf
 
 
 func (db *dbHandler) Update(table string,where interface{},paras interface{},arg ...string) (interface{},error){
-	conn, err := grpc.Dial(db.address, grpc.WithInsecure())
+	conn:=getClient()
 
-	if err!=nil{
-		log.Printf("Save Conn Error:%v",err)
-		return nil,err
-	}
-	defer conn.Close()
+	defer releaseClient(conn)
 
 	c := pb.NewDbServiceClient(conn)
 
@@ -318,13 +243,9 @@ func (db *dbHandler) Update(table string,where interface{},paras interface{},arg
 
 
 func (db *dbHandler) Del(table string,id interface{},arg ...string) (interface{},error){
-	conn, err := grpc.Dial(db.address, grpc.WithInsecure())
+	conn:=getClient()
 
-	if err!=nil{
-		log.Printf("Del Conn Error:%v",err)
-		return nil,err
-	}
-	defer conn.Close()
+	defer releaseClient(conn)
 
 	c := pb.NewDbServiceClient(conn)
 
@@ -353,13 +274,9 @@ func (db *dbHandler) Del(table string,id interface{},arg ...string) (interface{}
 
 
 func (db *dbHandler) MultiGet(table string,id interface{},arg ...string) (interface{},error){
-	conn, err := grpc.Dial(db.address, grpc.WithInsecure())
+	conn:=getClient()
 
-	if err!=nil{
-		log.Printf("MultiGet Conn Error:%v",err)
-		return nil,err
-	}
-	defer conn.Close()
+	defer releaseClient(conn)
 
 	c := pb.NewDbServiceClient(conn)
 
@@ -411,13 +328,9 @@ func (db *dbHandler) MultiGet(table string,id interface{},arg ...string) (interf
 
 
 func (db *dbHandler) ToOne(table string,where string,paras string,result interface{},arg ...string) (interface{},error){
-	conn, err := grpc.Dial(db.address, grpc.WithInsecure())
+	conn:=getClient()
 
-	if err!=nil{
-		log.Printf("MultiGet Conn Error:%v",err)
-		return nil,err
-	}
-	defer conn.Close()
+	defer releaseClient(conn)
 
 	c := pb.NewDbServiceClient(conn)
 
@@ -458,13 +371,9 @@ func (db *dbHandler) ToOne(table string,where string,paras string,result interfa
 
 
 func (db *dbHandler) ToMany(table string,where string,paras string,result interface{}, arg ...string) (interface{},error){
-	conn, err := grpc.Dial(db.address, grpc.WithInsecure())
+	conn:=getClient()
 
-	if err!=nil{
-		log.Printf("ToMany Conn Error:%v",err)
-		return nil,err
-	}
-	defer conn.Close()
+	defer releaseClient(conn)
 
 	c := pb.NewDbServiceClient(conn)
 
@@ -504,13 +413,9 @@ func (db *dbHandler) ToMany(table string,where string,paras string,result interf
 
 
 func (db *dbHandler) Count(table string,where interface{},arg ...string) (interface{},error){
-	conn, err := grpc.Dial(db.address, grpc.WithInsecure())
+	conn:=getClient()
 
-	if err!=nil{
-		log.Printf("Count Conn Error:%v",err)
-		return nil,err
-	}
-	defer conn.Close()
+	defer releaseClient(conn)
 
 	c := pb.NewDbServiceClient(conn)
 
@@ -548,13 +453,9 @@ func (db *dbHandler) Count(table string,where interface{},arg ...string) (interf
 }
 
 func (db *dbHandler) Sum(table string,field string, where interface{},arg ...string) (interface{},error) {
-	conn, err := grpc.Dial(db.address, grpc.WithInsecure())
+	conn:=getClient()
 
-	if err!=nil{
-		log.Printf("Sum Conn Error:%v",err)
-		return nil,err
-	}
-	defer conn.Close()
+	defer releaseClient(conn)
 
 	c := pb.NewDbServiceClient(conn)
 

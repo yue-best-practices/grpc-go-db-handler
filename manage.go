@@ -6,6 +6,7 @@ package grpc_go_db_handler
 import "google.golang.org/grpc"
 
 func initPool() error{
+	pool=make(chan *grpc.ClientConn,poolSize)
 	for i:=0;i<poolSize;i++{
 		conn, err := grpc.Dial(ins.address, grpc.WithInsecure())
 		if err!=nil{
@@ -18,9 +19,22 @@ func initPool() error{
 }
 
 func getClient() *grpc.ClientConn{
-	return <-pool
+	if len(pool)>0{
+		return <-pool
+	}else{
+		conn, err := grpc.Dial(ins.address, grpc.WithInsecure())
+		if err!=nil{
+			return <-pool
+		}else{
+			return conn
+		}
+	}
 }
 
 func releaseClient(client *grpc.ClientConn) {
-	pool<-client
+	if len(pool)<poolSize{
+		pool<-client
+	}else{
+		client.Close()
+	}
 }
