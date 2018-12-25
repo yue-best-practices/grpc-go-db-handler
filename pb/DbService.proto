@@ -132,6 +132,17 @@ message sumResponse{
     string result=1;
 }
 
+// query
+message queryRequest{
+    string dataSource=1;
+    string rawQuery=2;
+    string where=3;
+}
+
+message queryResponse{
+    string result=1;
+}
+
 service DbService{
     rpc get(getRequest) returns (getResponse){}
     rpc getOne(getOneRequest) returns (getOneResponse){}
@@ -144,4 +155,5 @@ service DbService{
     rpc toMany(toManyRequest) returns (toManyResponse){}
     rpc count(countRequest) returns (countResponse){}
     rpc sum(sumRequest) returns (sumResponse){}
+    rpc query(queryRequest) returns (queryResponse){}
 }
