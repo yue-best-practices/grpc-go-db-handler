@@ -493,5 +493,39 @@ func (db *dbHandler) Sum(table string,field string, where interface{},arg ...str
 }
 
 
+func (db *dbHandler) Query(rawQuery string,where interface{},arg ...string)(interface{},error){
+	conn:=getClient()
+	defer releaseClient(conn)
+	c:=pb.NewDbServiceClient(conn)
+	ctx,cancel:=context.WithTimeout(context.Background(),time.Millisecond*expireTime)
+	defer cancel()
+
+	dataSource:=db.dataSource
+
+	if arg!=nil{
+		dataSource=arg[0]
+	}
+	q,_:=json.Marshal(rawQuery)
+	w,_:=json.Marshal(where)
+	d,_:=json.Marshal(dataSource)
+
+	r,err:=c.Query(ctx,&pb.QueryRequest{RawQuery:string(q),Where:string(w),DataSource:string(d)})
+
+	if err!=nil{
+		log.Printf("Query Result Error:%v",err)
+		return nil,err
+	}
+
+	var result interface{}
+
+	err=json.Unmarshal([]byte(r.Result),&result)
+
+	if err!=nil{
+		log.Printf("Query Json Error:%v",err)
+		return nil,err
+	}
+
+	return result,nil
+}
 
 
